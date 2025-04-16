@@ -1,0 +1,71 @@
+<!-- random.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Logo</title>
+  
+  <!-- Firebase SDK (non-module version) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAl09MKMY_qAn-y-CFj3SlVE8EgtDRbFx4",
+      authDomain: "dishcovery-b2da5.firebaseapp.com",
+      databaseURL: "https://dishcovery-b2da5-default-rtdb.firebaseio.com",
+      projectId: "dishcovery-b2da5",
+      storageBucket: "dishcovery-b2da5.appspot.com",
+      messagingSenderId: "976857231272",
+      appId: "1:976857231272:web:4a6b4eb598f99bd403b79d"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Function to get random logo from the "random" category
+    function getRandomLogo() {
+      const recipeList = document.getElementById("recipe-list");
+      recipeList.innerHTML = ""; // Clear previous image
+
+      const recipeRef = db.ref('recipes');
+      recipeRef.once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          const recipes = snapshot.val();
+          
+          // Filter only "random" category recipes
+          const randomCategoryRecipes = Object.values(recipes).filter(r => r.category === "random");
+
+          if (randomCategoryRecipes.length === 0) {
+            recipeList.innerHTML = "<p>No random logos available!</p>";
+            return;
+          }
+
+          // Choose a random logo from the random category
+          const randomLogo = randomCategoryRecipes[Math.floor(Math.random() * randomCategoryRecipes.length)];
+
+          // Display the random logo
+          recipeList.innerHTML = `
+            <h3>Random Logo: ${randomLogo.name}</h3>
+            <img src="${randomLogo.image}" alt="${randomLogo.name}" width="200" />
+          `;
+        } else {
+          console.log("No data found in Firebase.");
+          recipeList.innerHTML = "<p>No data found in the database!</p>";
+        }
+      }).catch((error) => {
+        console.error("Error fetching data: ", error);
+        recipeList.innerHTML = "<p>Error fetching data.</p>";
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Random Recipe Logo</h1>
+  <button onclick="getRandomLogo()">Get Random Logo</button>
+  <div id="recipe-list"></div>
+</body>
+</html>

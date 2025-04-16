@@ -1,0 +1,35 @@
+<!-- admin dashboard-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-dashboard-container">
+    <h2>Admin Dashboard</h2>
+    
+    <div class="add-food-form">
+      <h3>Add New Food</h3>
+      <form id="addFoodForm">
+        <label for="foodName">Food Name:</label>
+        <input type="text" id="foodName" required>
+        
+        <label for="foodCategory">Category:</label>
+        <input type="text" id="foodCategory" required>
+        
+        <button type="submit">Add Food</button>
+      </form>
+    </div>
+
+    <div id="food-list">
+      <h3>Food List</h3>
+      <!-- Food items will appear here -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
